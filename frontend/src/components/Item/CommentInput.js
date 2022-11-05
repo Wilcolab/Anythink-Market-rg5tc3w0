@@ -17,30 +17,27 @@ const CommentInput = (props) => {
   };
   return (
     <form className="card comment-form m-2" onSubmit={handleSubmit}>
-    <div className="card-block">
-      <textarea
-        className="form-control"
-        placeholder="Write a comment..."
-        value={body}
-        onChange={(ev) => setBody(ev.target.value)}
-        rows="3"
-      ></textarea>
-    </div>
-    <div className="card-footer">
-      <img
-        src={this.props.currentUser.image}
-        className="user-pic mr-2"
-        alt={this.props.currentUser.username}
-      />
-      <button className="btn btn-sm btn-primary" type="submit">
-        Post Comment
-      </button>
-    </div>
-  </form>
+      <div className="card-block">
+        <textarea
+          className="form-control"
+          placeholder="Write a comment..."
+          value={body}
+          onChange={(ev) => setBody(ev.target.value)}
+          rows="3"
+        ></textarea>
+      </div>
+      <div className="card-footer">
+        <img
+          src={props.currentUser.image}
+          className="user-pic mr-2"
+          alt={props.currentUser.username}
+        />
+        <button className="btn btn-sm btn-primary" type="submit">
+          Post Comment
+        </button>
+      </div>
+    </form>
   );
 };
-
-
-
 
 export default connect(() => ({}), mapDispatchToProps)(CommentInput);
