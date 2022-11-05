@@ -3,9 +3,7 @@ import agent from "../../agent";
 import { connect } from "react-redux";
 import { ADD_COMMENT } from "../../constants/actionTypes";
 
-const mapDispatchToProps = (dispatch) => ({
-  onSubmit: (payload) => dispatch({ type: ADD_COMMENT, payload }),
-});
+const mapDispatchToProps = newFunction();
 
 const CommentInput = (props) => {
   const [body, setBody] = React.useState("");
@@ -41,3 +39,9 @@ const CommentInput = (props) => {
 };
 
 export default connect(() => ({}), mapDispatchToProps)(CommentInput);
+function newFunction() {
+  return (dispatch) => ({
+    onSubmit: (payload) => dispatch({ type: ADD_COMMENT, payload }),
+  });
+}
+
