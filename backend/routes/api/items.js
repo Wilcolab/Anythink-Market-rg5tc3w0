@@ -55,11 +55,13 @@ router.get("/", auth.optional, function(req, res, next) {
 
   Promise.all([
     req.query.seller ? User.findOne({ username: req.query.seller }) : null,
-    req.query.favorited ? User.findOne({ username: req.query.favorited }) : null
+    req.query.favorited ? User.findOne({ username: req.query.favorited }) : null,
+    req.query.title ? Item.findOne({ title: req.query.title }) : null
   ])
     .then(function(results) {
       var seller = results[0];
       var favoriter = results[1];
+      var title = results[2];
 
       if (seller) {
         query.seller = seller._id;
@@ -70,6 +72,11 @@ router.get("/", auth.optional, function(req, res, next) {
       } else if (req.query.favorited) {
         query._id = { $in: [] };
       }
+
+      if (title) {
+        query.title = title._id;
+      }
+
 
       return Promise.all([
         Item.find(query)
