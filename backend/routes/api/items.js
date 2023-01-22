@@ -166,7 +166,9 @@ router.post("/", auth.required, function (req, res, next) {
 
       item.seller = user;
 
-      item.image = req.body.item.image? req.body.item.image : getRandomImage(item.title);
+      let randomImage = getRandomImage(item.title);
+
+      item.image = req.body.item.image ? req.body.item.image : randomImage;
 
       return item.save().then(function () {
         sendEvent("item_created", { item: req.body.item });
