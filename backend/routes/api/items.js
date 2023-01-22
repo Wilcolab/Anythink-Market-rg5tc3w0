@@ -14,12 +14,17 @@ const config = new Configuration({
 const openai = new OpenAIApi(config);
 
 async function getRandomImage(title) {
-  const res = await openai.createImage({
-    prompt: title,
-    size: "256x256",
-  });
-
-  return res.data.data[0].url;
+  try{
+    const res = await openai.createImage({
+      prompt: title,
+      n: 1,
+      size: "256x256",
+    });
+    return res.data.data[0].url;
+  }
+  catch(err){
+    console.log(err);
+  }
 }
 
 // Preload item objects on routes with ':item'
@@ -157,7 +162,7 @@ router.get("/feed", auth.required, function (req, res, next) {
 
 router.post("/", auth.required, function (req, res, next) {
   User.findById(req.payload.id)
-    .then(function (user) {
+    .then(async function (user) {
       if (!user) {
         return res.sendStatus(401);
       }
@@ -166,7 +171,7 @@ router.post("/", auth.required, function (req, res, next) {
 
       item.seller = user;
 
-      let randomImage = getRandomImage(item.title);
+      let randomImage = await getRandomImage(item.title);
 
       item.image = req.body.item.image ? req.body.item.image : randomImage;
 
