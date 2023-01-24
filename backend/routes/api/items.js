@@ -14,7 +14,6 @@ const configuration = new Configuration({
 const openai = new OpenAIApi(configuration);
 
 async function getAIDescription(title) {
-  console.log(process.env.OPENAI_API_KEY)
   const response = await openai.createCompletion({
     model: "text-davinci-003",
     prompt: `This is a description of a ${title}.\n\n`,
