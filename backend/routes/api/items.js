@@ -158,7 +158,7 @@ router.get("/feed", auth.required, function(req, res, next) {
 
 router.post("/", auth.required, function(req, res, next) {
   User.findById(req.payload.id)
-    .then(async function(user) {
+    .then(function(user) {
       if (!user) {
         return res.sendStatus(401);
       }
@@ -166,10 +166,6 @@ router.post("/", auth.required, function(req, res, next) {
       var item = new Item(req.body.item);
 
       item.seller = user;
-
-      let aiDescription = await getAIDescription(item.title);
-
-      item.description = req.body.item.description ? req.body.item.description : aiDescription;
 
       return item.save().then(function() {
         sendEvent('item_created', { item: req.body.item })
