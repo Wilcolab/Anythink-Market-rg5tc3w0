@@ -64,11 +64,11 @@ class Home extends React.Component {
   render() {
     return (
       <div className="home-page">
-        <Banner searchValue={this.searchValue} handleSearch={this.handleSearch} />
+        <Banner searchValue={this.state.searchValue} handleSearch={this.handleSearch} />
 
         <div className="container page">
           <Tags tags={this.props.tags} onClickTag={this.props.onClickTag} />
-          <MainView searchValue={this.searchValue} />
+          <MainView searchValue={this.state.searchValue} />
         </div>
       </div>
     );
