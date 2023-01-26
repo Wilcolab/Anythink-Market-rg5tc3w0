@@ -6,9 +6,6 @@ const ItemList = (props) => {
 
   const [listItems, setListItems] = useState(props.items);
 
-
-  
-
   useEffect(() => {
     if(props.searchValue.length > 2){
       setListItems(props.items.filter(item => item.title.toLowerCase().includes(props.searchValue.toLowerCase())))
@@ -30,7 +27,7 @@ const ItemList = (props) => {
   return (
     <div className="container py-2">
       <div className="row">
-        (listItems.length>0)?
+
         {
           listItems?.map((item) => {
             return (
@@ -39,10 +36,12 @@ const ItemList = (props) => {
               </div>
             );
           })
-        }:
-        (<div id="empty">
+        } 
+        {listItems?.length === 0 &&
+        <div id="empty">
         No items found for "{props.searchValue}"
-        </div>)
+        </div>
+        }
       </div>
 
       <ListPagination
