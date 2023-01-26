@@ -30,6 +30,7 @@ const ItemList = (props) => {
   return (
     <div className="container py-2">
       <div className="row">
+        (listItems.length>0)?
         {
           listItems?.map((item) => {
             return (
@@ -38,7 +39,10 @@ const ItemList = (props) => {
               </div>
             );
           })
-        }
+        }:
+        (<div id="empty">
+        No items found for "{props.searchValue}"
+        </div>)
       </div>
 
       <ListPagination
