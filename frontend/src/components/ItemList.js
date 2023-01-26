@@ -1,8 +1,24 @@
 import ItemPreview from "./ItemPreview";
 import ListPagination from "./ListPagination";
-import React from "react";
+import React, {useEffect, useState} from "react";
 
 const ItemList = (props) => {
+
+  const [listItems, setListItems] = useState(props.items);
+
+
+  
+
+  useEffect(() => {
+    if(props.searchValue.length > 2){
+      setListItems(props.items.filter(item => item.title.toLowerCase().includes(props.searchValue.toLowerCase())))
+    }
+    else{
+      setListItems(props.items)
+    }
+  }, [props.searchValue])
+
+
   if (!props.items) {
     return <div className="py-4">Loading...</div>;
   }
@@ -14,13 +30,19 @@ const ItemList = (props) => {
   return (
     <div className="container py-2">
       <div className="row">
-        {props.items.map((item) => {
-          return (
-            <div className="col-sm-4 pb-2" key={item.slug}>
-              <ItemPreview item={item} />
-            </div>
-          );
-        })}
+        (listItems.length>0)?
+        {
+          listItems?.map((item) => {
+            return (
+              <div className="col-sm-4 pb-2" key={item.slug}>
+                <ItemPreview item={item} />
+              </div>
+            );
+          })
+        }:
+        (<div id="empty">
+        No items found for "{props.searchValue}"
+        </div>)
       </div>
 
       <ListPagination

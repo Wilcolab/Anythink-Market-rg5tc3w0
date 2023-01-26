@@ -14,7 +14,6 @@ const configuration = new Configuration({
 const openai = new OpenAIApi(configuration);
 
 async function getAIDescription(title) {
-  console.log(process.env.OPENAI_API_KEY)
   const response = await openai.createCompletion({
     model: "text-davinci-003",
     prompt: `This is a description of a ${title}.\n\n`,
@@ -72,6 +71,10 @@ router.get("/", auth.optional, function(req, res, next) {
     query.tagList = { $in: [req.query.tag] };
   }
 
+  if(typeof req.query.title !== "undefined"){
+    query.title = { $regex: req.query.title, $options: "i" };
+  }
+
   Promise.all([
     req.query.seller ? User.findOne({ username: req.query.seller }) : null,
     req.query.favorited ? User.findOne({ username: req.query.favorited }) : null
@@ -89,6 +92,8 @@ router.get("/", auth.optional, function(req, res, next) {
       } else if (req.query.favorited) {
         query._id = { $in: [] };
       }
+
+      
 
       return Promise.all([
         Item.find(query)
@@ -158,7 +163,7 @@ router.get("/feed", auth.required, function(req, res, next) {
 
 router.post("/", auth.required, function(req, res, next) {
   User.findById(req.payload.id)
-    .then(async function(user) {
+    .then(function(user) {
       if (!user) {
         return res.sendStatus(401);
       }
@@ -166,10 +171,6 @@ router.post("/", auth.required, function(req, res, next) {
       var item = new Item(req.body.item);
 
       item.seller = user;
-
-      let aiDescription = await getAIDescription(item.title);
-
-      item.description = req.body.item.description ? req.body.item.description : aiDescription;
 
       return item.save().then(function() {
         sendEvent('item_created', { item: req.body.item })
