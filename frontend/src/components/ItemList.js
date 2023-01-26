@@ -37,7 +37,7 @@ const ItemList = (props) => {
             );
           })
         } 
-        {listItems?.length === 0 &&
+        {props.items.length > 0 && listItems?.length === 0 &&
         <div id="empty">
         No items found for "{props.searchValue}"
         </div>
