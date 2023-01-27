@@ -4,8 +4,6 @@ import agent from "../../agent";
 import { connect } from "react-redux";
 import { CHANGE_TAB } from "../../constants/actionTypes";
 
-
-
 const YourFeedTab = (props) => {
   if (props.token) {
     const clickHandler = (ev) => {
@@ -72,12 +70,6 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 const MainView = (props) => {
-
-  
-
-  
-
-
   return (
     <div>
       <div className="feed-toggle">
@@ -94,15 +86,12 @@ const MainView = (props) => {
         </ul>
       </div>
 
-
-      
       <ItemList
         pager={props.pager}
         items={props.items}
         loading={props.loading}
         itemsCount={props.itemsCount}
         currentPage={props.currentPage}
-        searchValue={props.searchValue}
       />
     </div>
   );

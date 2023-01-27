@@ -10,7 +10,6 @@ import {
   APPLY_TAG_FILTER,
 } from "../../constants/actionTypes";
 
-
 const Promise = global.Promise;
 
 const mapStateToProps = (state) => ({
@@ -28,25 +27,9 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 class Home extends React.Component {
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      searchValue: ""
-    }
-    this.handleSearch = this.handleSearch.bind(this)
-  }
-
-  handleSearch = (e) => {
-    this.setState({searchValue: e.target.value});
-  }
-
-
   componentWillMount() {
     const tab = "all";
     const itemsPromise = agent.Items.all;
-    
-    
 
     this.props.onLoad(
       tab,
@@ -55,8 +38,6 @@ class Home extends React.Component {
     );
   }
 
-  
-
   componentWillUnmount() {
     this.props.onUnload();
   }
@@ -64,11 +45,11 @@ class Home extends React.Component {
   render() {
     return (
       <div className="home-page">
-        <Banner searchValue={this.state.searchValue} handleSearch={this.handleSearch} />
+        <Banner />
 
         <div className="container page">
           <Tags tags={this.props.tags} onClickTag={this.props.onClickTag} />
-          <MainView searchValue={this.state.searchValue} />
+          <MainView />
         </div>
       </div>
     );
