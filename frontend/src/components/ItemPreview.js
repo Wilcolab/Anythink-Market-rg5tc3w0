@@ -31,13 +31,13 @@ const ItemPreview = (props) => {
 
   return (
     <div
-      className="card bg-dark border-light p-3 h-100"
+      className="card bg-dark border-light p-3"
       style={{ borderRadius: "20px" }}
       id={`item_${item.slug}`}
     >
       <img
         alt="item"
-        src={item.image? item.image : "placeholder.png"}
+        src={item.image}
         className="card-img-top item-img"
         style={{ borderRadius: "20px" }}
       />
