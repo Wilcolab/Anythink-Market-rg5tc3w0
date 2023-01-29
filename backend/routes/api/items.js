@@ -6,6 +6,23 @@ var User = mongoose.model("User");
 var auth = require("../auth");
 const { sendEvent } = require("../../lib/event");
 
+const { Configuration, OpenAIApi } = require("openai");
+const configuration = new Configuration({
+  apiKey: process.env.OPENAI_API_KEY,
+});
+const openai = new OpenAIApi(configuration);
+
+async function getAIDescription(title) {
+  const response = await openai.createCompletion({
+    model: "text-davinci-003",
+    prompt: `This is a description of a ${title}.\n\n`,
+    max_tokens: 7,
+    temperature: 0,
+  });
+
+  return response.data.choices[0].text;
+}
+
 // Preload item objects on routes with ':item'
 router.param("item", function(req, res, next, slug) {
   Item.findOne({ slug: slug })
@@ -139,7 +156,7 @@ router.get("/feed", auth.required, function(req, res, next) {
 
 router.post("/", auth.required, function(req, res, next) {
   User.findById(req.payload.id)
-    .then(function(user) {
+    .then(async function(user) {
       if (!user) {
         return res.sendStatus(401);
       }
@@ -147,6 +164,10 @@ router.post("/", auth.required, function(req, res, next) {
       var item = new Item(req.body.item);
 
       item.seller = user;
+
+      let aiDescription = await getAIDescription(item.title);
+
+      item.description = req.body.item.description ? req.body.item.description : aiDescription;
 
       return item.save().then(function() {
         sendEvent('item_created', { item: req.body.item })
