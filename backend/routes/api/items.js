@@ -308,7 +308,6 @@ router.get("/:item/comments", auth.optional, function(req, res, next) {
     })
     .catch(next);
 });
-
 // create a new comment
 router.post("/:item/comments", auth.required, function(req, res, next) {
   User.findById(req.payload.id)
