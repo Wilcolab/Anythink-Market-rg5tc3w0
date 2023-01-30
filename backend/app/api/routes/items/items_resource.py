@@ -71,9 +71,10 @@ async def create_new_item(
     item = await items_repo.create_item(
         slug=slug,
         title=item_create.title,
-        description=item_create.description,
+        description=item_create.description or "description",
         body=item_create.body,
         seller=user,
+
         tags=item_create.tags,
         image=item_create.image
     )
